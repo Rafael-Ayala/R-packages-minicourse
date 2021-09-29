@@ -277,7 +277,19 @@ More on Bioconductor
 GitHub
 ========================================================
 
-Tip: `ssh-add`
+ * Not the only hosting platform, there is also GitLab, etc.
+ * Useful to manage source code of course, but also
+ * There to install a package directly from a GitHub repository.
+ 
+ ```
+ remotes::install_github(), remotes::install_bioc()
+ ```
+ 
+ * Tip: `ssh-add`
+
+
+GitHub
+========================================================
 
 GitHub actions for regression testing
 ========================================================
@@ -286,6 +298,9 @@ GitHub actions for regression testing
 usethis::use_github_action()
 biocthis::use_bioc_github_action()
 ```
+
+Get a Zenodo DOI for packages via Git repositories
+========================================================
 
 Pkgdown
 ========================================================
