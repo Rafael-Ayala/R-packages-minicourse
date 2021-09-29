@@ -78,4 +78,22 @@ Learn more with <https://adv-r.hadley.nz/s4.html>
 More on Bioconductor
 ========================================================
 
+Release cycle
+
 https://code.bioconductor.org/
+
+GitHub
+========================================================
+
+Tip: `ssh-add`
+
+GitHub actions
+========================================================
+
+```
+usethis::use_github_action()
+biocthis::use_bioc_github_action()
+```
+
+Pkgdown
+========================================================
