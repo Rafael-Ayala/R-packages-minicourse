@@ -1,3 +1,18 @@
+<style>
+body {
+    overflow: scroll;
+}
+</style>
+<!-- https://stackoverflow.com/a/37144055 -->
+
+<style>
+.small-code pre code {
+  font-size: 1em;
+}
+</style>
+
+<!-- https://rstudio-pubs-static.s3.amazonaws.com/27777_55697c3a476640caa0ad2099fe914ae5.html#/9 -->
+
 MiniCourse R packages Day2
 ========================================================
 author: Charles Plessy
@@ -23,64 +38,233 @@ Day 2 contents
 Bioconductor
 ========================================================
 
-```{r}
-summary(cars)
+[Bioconductor](https://www.bioconductor.org/) (or just “Bioc“) is _“open source
+software for bioinformatics”_, based on more than 2000 `R` packages.  It is old
+enough to have its own [Wikipedia page](https://en.wikipedia.org/wiki/Bioconductor)!
+
+It can be installed... from CRAN.
+
 ```
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install(version = "3.13")
+```
+
+Hold on if you are not bioinformatician, we will use it to learn more about _S4_
+classes.
 
 Bioconductor core packages
 ========================================================
 
-```{r}
-# Attaches a lot of stuff !!!
-suppressPackageStartupMessages(library("GenomicRanges"))
+Canonical URLs: `https://bioconductor.org/packages/nameOfThePackage`
+
+The core Bioconductor packages provide core classes that you will find being
+used in almost every other packages.
+
 ```
+# Attaches a lot of stuff !!!
+BiocManager::install("GenomicRanges")
+library("GenomicRanges")
+```
+
+```{r}
+# Use this in your R Markdown files...
+suppressPackageStartupMessages(library("GenomicRanges"))
+
+# Or since R4.1
+library("GenomicRanges") |> suppressPackageStartupMessages()
+```
+
+Output of `library("GenomicRanges")`
+========================================================
+
+<small><small><small><small><small><small><small><small>
+
+```
+> library("GenomicRanges")
+
+Restarting R session...
+
+> library("GenomicRanges")
+Loading required package: stats4
+Loading required package: BiocGenerics
+Loading required package: parallel
+
+Attaching package: ‘BiocGenerics’
+
+The following objects are masked from ‘package:parallel’:
+
+    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ, clusterExport, clusterMap,
+    parApply, parCapply, parLapply, parLapplyLB, parRapply, parSapply, parSapplyLB
+
+The following objects are masked from ‘package:stats’:
+
+    IQR, mad, sd, var, xtabs
+
+The following objects are masked from ‘package:base’:
+
+    anyDuplicated, append, as.data.frame, basename, cbind, colnames, dirname, do.call,
+    duplicated, eval, evalq, Filter, Find, get, grep, grepl, intersect, is.unsorted,
+    lapply, Map, mapply, match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,
+    Position, rank, rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply, union,
+    unique, unsplit, which.max, which.min
+
+Loading required package: S4Vectors
+
+Attaching package: ‘S4Vectors’
+
+The following objects are masked from ‘package:base’:
+
+    expand.grid, I, unname
+
+Loading required package: IRanges
+Loading required package: GenomeInfoDb
+```
+</small></small></small></small></small></small></small></small>
+
 
 Bioconductor core classes
 ========================================================
 
+- Use the S4 class system.
 - Often names start with capital letters.
-- Some of the core classes are in the core pakcages that with cryptic names.
+- Some of the core classes are in the core packages that with cryptic names.
 - Today I will not cover annotation databases or genome objects.
+
 
 DataFrame
 ========================================================
+class: small-code
 
 ```{r}
 DataFrame()
 as(airquality, "DataFrame")
-
+# or just `DataFrame(airquality)` ...
 ```
+
 
 Rle
 ========================================================
+class: small-code
+
+Run-length encoding (`Rle`) is a simple and efficient way to compress data.
 
 ```{r, cache = TRUE}
 Rle(rpois(1e7, 1e-3))
 ```
 
+A data structure that I like is a `DataFrame` of `Rle` values.
+
+```{r}
+airquality |> lapply(Rle) |> DataFrame() |> head(3)
+```
+
 Other important classes
 ========================================================
 
-- SummarizedExperiment  MultiAssayExperiment.
+- [`GRanges`](https://bioconductor.org/packages/GenomicRanges)
+- [`SummarizedExperiment`](https://bioconductor.org/packages/SummarizedExperiment)
+- [`MultiAssayExperiment`](https://bioconductor.org/packages/MultiAssayExperiment)
 
-A few words on S4
+A few words on the S4 class system
 ========================================================
 
+- polymorphic and functional: core function names dispatch on different methods
+  according to the class of their arguments.
 
-- polymorphic, functional
-- `@` slots
-- `debugonce`,
-- namespace issues
-- copy-on-write / copy-on-modify
+- Objects have “slots” accessed with the `@` sign.
+
+- copy-on-write / copy-on-modify semantics.
+
+- Useful as data structure but also for type safety
 
 Learn more with <https://adv-r.hadley.nz/s4.html>
+
+Let's extend a S4 class
+========================================================
+
+It is strongly recommended to re-use the core Bioc classes in packages designed
+for Bioconductor.
+
+```{r}
+library(methods)
+setClass("BetterList", contains = "SimpleList")
+setMethod("show", "BetterList", function(object) {
+  callNextMethod()
+  cat("This superior version of the SimpleList class is brought to you by the OIST minicourses\n")
+})
+SimpleList(a=1, b=2) |> as("BetterList")
+```
+
+It also works on S3 classes
+========================================================
+
+It is a matter of taste whether to do so or not.
+
+```{r}
+setClass("BetterList2", contains = "list")
+setMethod("show", "BetterList2", function(object) {
+  callNextMethod()
+  cat("This superior version of the list class is also brought to you by the OIST minicourses\n")
+})
+list(c=3) |> as("BetterList2")
+```
+
+Use for type safety
+========================================================
+
+```{r}
+setClass("ListOfChars", contains = "SimpleList", validity = function (object){
+  # Actually not so safe, what is the list contains sublists?
+  all(sapply(object, is.character))
+})
+setMethod("show", "ListOfChars", function(object) {
+  callNextMethod()
+  cat("This safer version of the SimpleList class is surely brought to you by the OIST minicourses\n")
+})
+SimpleList("haha", "hoho") |> as("ListOfChars") |> validObject()
+# Try this!
+# SimpleList("haha", 1) |> as("ListOfChars") |> validObject()
+```
+
+When to Depend or Import Bioc packages
+========================================================
+
+Tip for easier debugging of your package.
+========================================================
+class: small-code
+
+Do the ground work in a `S3` function, and wrap it in the `S4` system.
+
+```{r}
+setGeneric("countRows", function(x) standardGeneric("countRows") )
+setMethod("countRows", "DataFrame", .countRows)
+.countRows <- function(x) {
+  if (nrow(x) > 0) cat("Owow, there are rows \n")
+  cat("I found ", nrow(x), "rows.\n")
+  cat("I think I finished counting\n")
+}
+airquality |> DataFrame() |> countRows()
+```
+
+And now you can set the debugger to jump straight in your code instead of
+navigating through multiple layers of S4 dispatch.
+
+```
+debugonce(rowCounteR:::.countRows)
+airquality |> DataFrame() |> countRows()
+```
 
 More on Bioconductor
 ========================================================
 
-Release cycle
+- Releases twice a year, shortly after R releases.
 
-https://code.bioconductor.org/
+- Maintains a `release`` and a `devel` branch in parallel.  Version numbers
+  are even and odd respectively. <http://www.bioconductor.org/developers/how-to/version-numbering/>
+
+
+- Browse all soure code at <https://code.bioconductor.org/>
 
 GitHub
 ========================================================
