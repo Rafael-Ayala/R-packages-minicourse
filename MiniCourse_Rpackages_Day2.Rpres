@@ -269,9 +269,8 @@ More on Bioconductor
 
 - Releases twice a year, shortly after R releases.
 
-- Maintains a `release`` and a `devel` branch in parallel.  Version numbers
+- Maintains a `release` and a `devel` branch in parallel.  Version numbers
   are even and odd respectively. <http://www.bioconductor.org/developers/how-to/version-numbering/>
-
 
 - Browse all soure code at <https://code.bioconductor.org/>
 
@@ -280,7 +279,7 @@ GitHub
 
 Tip: `ssh-add`
 
-GitHub actions
+GitHub actions for regression testing
 ========================================================
 
 ```
@@ -290,3 +289,9 @@ biocthis::use_bioc_github_action()
 
 Pkgdown
 ========================================================
+
+The website of `pkgdown` is of course built with `pkgdown`, so let's have a look.
+
+<https://pkgdown.r-lib.org/>
+
+<https://pkgdown.r-lib.org/articles/linking.html>
