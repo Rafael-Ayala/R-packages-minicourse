@@ -1,0 +1,81 @@
+MiniCourse R packages Day2
+========================================================
+author: Charles Plessy
+date: 
+autosize: true
+
+Day 2 contents
+========================================================
+
+- Bioconductor
+  - Core packages
+  - Core classes
+  - Release cycle
+  - Submission process
+
+- GitHub
+  - Package hosting
+  - Continuous integration
+  - GitHub actions
+
+- Practical: package website with [pkgdown](https://pkgdown.r-lib.org/)
+
+Bioconductor
+========================================================
+
+```{r}
+summary(cars)
+```
+
+Bioconductor core packages
+========================================================
+
+```{r}
+# Attaches a lot of stuff !!!
+suppressPackageStartupMessages(library("GenomicRanges"))
+```
+
+Bioconductor core classes
+========================================================
+
+- Often names start with capital letters.
+- Some of the core classes are in the core pakcages that with cryptic names.
+- Today I will not cover annotation databases or genome objects.
+
+DataFrame
+========================================================
+
+```{r}
+DataFrame()
+as(airquality, "DataFrame")
+
+```
+
+Rle
+========================================================
+
+```{r, cache = TRUE}
+Rle(rpois(1e7, 1e-3))
+```
+
+Other important classes
+========================================================
+
+- SummarizedExperiment  MultiAssayExperiment.
+
+A few words on S4
+========================================================
+
+
+- polymorphic, functional
+- `@` slots
+- `debugonce`,
+- namespace issues
+- copy-on-write / copy-on-modify
+
+Learn more with <https://adv-r.hadley.nz/s4.html>
+
+More on Bioconductor
+========================================================
+
+https://code.bioconductor.org/
