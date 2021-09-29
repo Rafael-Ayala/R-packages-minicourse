@@ -230,6 +230,15 @@ SimpleList("haha", "hoho") |> as("ListOfChars") |> validObject()
 When to Depend or Import Bioc packages
 ========================================================
 
+ - If you use their functions internally, Import the packages in the DESCRIPTION
+   file and import their functions in NAMESPACE.  Typical examples: `IRanges`,
+   `S4Vectors`.
+ 
+ - If you want their functions to be easily available to their users, just
+   Depend on the packages in the DESCRIPTION file.   Typycal examples:
+   `GenomicRanges`, `SummarizedExperiment`, `ggplot2`.
+
+
 Tip for easier debugging of your package.
 ========================================================
 class: small-code
@@ -238,12 +247,12 @@ Do the ground work in a `S3` function, and wrap it in the `S4` system.
 
 ```{r}
 setGeneric("countRows", function(x) standardGeneric("countRows") )
-setMethod("countRows", "DataFrame", .countRows)
 .countRows <- function(x) {
   if (nrow(x) > 0) cat("Owow, there are rows \n")
   cat("I found ", nrow(x), "rows.\n")
   cat("I think I finished counting\n")
 }
+setMethod("countRows", "DataFrame", .countRows)
 airquality |> DataFrame() |> countRows()
 ```
 
