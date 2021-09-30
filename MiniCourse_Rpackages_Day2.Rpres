@@ -81,6 +81,7 @@ Output of `library("GenomicRanges")`
 <small><small><small><small><small><small><small><small>
 
 ```
+# Note the difference between "loading" and "attaching"
 > library("GenomicRanges")
 
 Restarting R session...
@@ -128,7 +129,7 @@ Bioconductor core classes
 
 - Use the S4 class system.
 - Often names start with capital letters.
-- Some of the core classes are in the core packages that with cryptic names.
+- Some of the core classes are in the core packages that have cryptic names.
 - Today I will not cover annotation databases or genome objects.
 
 
@@ -271,42 +272,66 @@ More on Bioconductor
 
 - Maintains a `release` and a `devel` branch in parallel.  Version numbers
   are even and odd respectively. <http://www.bioconductor.org/developers/how-to/version-numbering/>
+  
+- Support site: <https://support.bioconductor.org/>
 
 - Browse all soure code at <https://code.bioconductor.org/>
 
+- [Submission process](https://www.bioconductor.org/developers/package-submission/)
+  takes place on GitHub by oppening an [issue on
+  `Bioconductor/Contributions`](https://github.com/Bioconductor/Contributions/issues) 
+
 GitHub
 ========================================================
 
- * Not the only hosting platform, there is also GitLab, etc.
+ * Not the only hosting platform, there is also [GitLab](https://about.gitlab.com/), etc.
  * Useful to manage source code of course, but also
- * There to install a package directly from a GitHub repository.
+ * There are functions to install a package directly from a GitHub repository.
  
  ```
- remotes::install_github(), remotes::install_bioc()
+ remotes::install_github("user/repo"), remotes::install_bioc()
  ```
  
- * Tip: `ssh-add`
-
-
-GitHub
+ * Reminder: never use passowrdless SSH keys, use `ssh-add` instead (you might
+   need to run `eval $(ssh-agent)` first).  Maye your keys transiently
+   available on Deigo with `ssh -A`.
+   
+   
+Get a Zenodo DOI for packages via Git repositories
 ========================================================
 
-GitHub actions for regression testing
+CRAN or Bioconductor, and journals provide DOIs.  How about non-peer-reviewed
+packages ?
+
+You can get DOIs from [Zenodo](https://zenodo.org/), or alternatively
+[Dryad](https://datadryad.org/), [figshare](https://figshare.com/), etc.
+
+Zenodo has a good integration with GitHub.  [Random example](https://zenodo.org/record/4725223#.YVUG6KCRWNY). 
+[Documentation](https://guides.github.com/activities/citable-code/)
+
+
+GitHub actions
 ========================================================
+
+GitHub actions for regression testing: example with the [`charles-plessy/CAGEr`](https://github.com/charles-plessy/CAGEr/) package.
 
 ```
 usethis::use_github_action()
 biocthis::use_bioc_github_action()
 ```
 
-Get a Zenodo DOI for packages via Git repositories
-========================================================
 
 Pkgdown
 ========================================================
+
+GitHub actions are also used for building GitHub pages.
 
 The website of `pkgdown` is of course built with `pkgdown`, so let's have a look.
 
 <https://pkgdown.r-lib.org/>
 
 <https://pkgdown.r-lib.org/articles/linking.html>
+
+Example with the [oist/GenomicBreaks](https://oist.github.io/GenomicBreaks) package
+
+Now, let's try it together !
