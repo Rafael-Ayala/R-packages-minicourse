@@ -1,23 +1,13 @@
-<style>
-body {
-    overflow: scroll;
-}
-</style>
-<!-- https://stackoverflow.com/a/37144055 -->
-
-<style>
-.small-code pre code {
-  font-size: 1em;
-}
-</style>
-
-<!-- https://rstudio-pubs-static.s3.amazonaws.com/27777_55697c3a476640caa0ad2099fe914ae5.html#/9 -->
-
-MiniCourse R packages Day2
-========================================================
-author: Charles Plessy
-date: 
-autosize: true
+---
+title: "MiniCourse R packages Day2"
+author: "Charles Plessy"
+date: "30/09/2021"
+fontsize: 8pt
+urlcolor: blue
+output: 
+  beamer_presentation: 
+    toc: yes
+---
 
 Day 2 contents
 ========================================================
@@ -78,8 +68,6 @@ library("GenomicRanges") |> suppressPackageStartupMessages()
 Output of `library("GenomicRanges")`
 ========================================================
 
-<small><small><small><small><small><small><small><small>
-
 ```
 # Note the difference between "loading" and "attaching"
 > library("GenomicRanges")
@@ -121,8 +109,6 @@ The following objects are masked from ‘package:base’:
 Loading required package: IRanges
 Loading required package: GenomeInfoDb
 ```
-</small></small></small></small></small></small></small></small>
-
 
 Bioconductor core classes
 ========================================================
@@ -135,7 +121,6 @@ Bioconductor core classes
 
 DataFrame
 ========================================================
-class: small-code
 
 ```{r}
 DataFrame()
@@ -146,7 +131,6 @@ as(airquality, "DataFrame")
 
 Rle
 ========================================================
-class: small-code
 
 Run-length encoding (`Rle`) is a simple and efficient way to compress data.
 
@@ -242,7 +226,6 @@ When to Depend or Import Bioc packages
 
 Tip for easier debugging of your package.
 ========================================================
-class: small-code
 
 Do the ground work in a `S3` function, and wrap it in the `S4` system.
 
